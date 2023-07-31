@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1622836189 source:c:\users\facundo\desktop\facultad niki\elementos de programacion\ejercicios\ejercicios codeblock\modelo de evaluacion 12\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

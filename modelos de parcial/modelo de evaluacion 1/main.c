@@ -1,0 +1,175 @@
+/*          La empresario Vegeta ,  desea realizar un informe sobre los sueldos de cada empleado,
+tenemos registradas las horas trabajadas durante un determinado mes, los datos son:
+•	Los sueldos de cada empleado:
+•	Legajo (1,35).
+•	dia (1,24).
+•	Horas (real < 12).
+
+Los datos de cada empleado deben ser verificados con la función correspondiente, el fin
+de datos con legajo = 0.
+Confeccionar un programa, diagrama y codificación que permita, a partir de dicha información:
+•	Emitir un informe que indique, por día, el total de horas trabajadas.
+•	Emitir un informe que indique el total de horas trabajadas por todos los empleados en este periodo.
+•	Informar ordenado de mayor a menor por sueldo, el legajo y monto abonado de sueldo (horas  x $15).
+•	El/Los legajo/s del/os empleados que más horas trabajo. Puede haber varios, informar horas y legajo.
+•	Informar Legajos de empleados que no trabajaron el periodo.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int LeerYValidar (int, int,int);
+float validarfloat(int);
+void punto_AyB(float[][35],int,int);
+void punto_CyD(float[][35],int,int,float []);
+void ordenamiento(int [],float [],float[],int );
+
+int main()
+{
+    int legajo,dia,i;
+    float horas,m[24][35]={{0}},suel[35];
+    for(i=0;i<35;i++)
+    {
+        do
+        {
+            printf("\nIngrese el sueldo del empleado nro %d: ",i+1);
+            scanf("%f",&suel[i]);
+        }while(suel[i]<0);
+    }
+    system("cls");
+    legajo=LeerYValidar(0,35,1);
+    while(legajo!=0)
+    {
+        dia=LeerYValidar(1,24,2);
+        horas=validarfloat(12);
+        m[dia-1][legajo-1]+=horas;
+        legajo=LeerYValidar(0,35,1);
+    }
+    punto_AyB(m,24,35);
+    punto_CyD(m,24,35,suel);
+    return 0;
+}
+
+int LeerYValidar(int x ,int y,int n)
+{
+    int dato;
+    do
+    {
+        if(n==1) printf("\nIngrese el legajo del trabajador: ");
+        if(n==2) printf("\nIngrese el dia: ");
+        scanf("%d",&dato);
+    }while(dato<x||dato>y);
+    return dato;
+}
+
+float validarfloat (int n)
+{
+    float dato;
+    do
+    {
+        printf("\nIngrese las horas trabajadas: ");
+        scanf("%f",&dato);
+    }while(dato>n);
+    return dato;
+}
+
+//•	Emitir un informe que indique, por día, el total de horas trabajadas.
+void punto_AyB(float m[24][35],int f,int c)
+{
+    int x,i;
+    float suma_fila[24]={0},total=0;
+    for(x=0;x<f;x++)
+    {
+        for(i=0;i<c;i++)
+        {
+            suma_fila[x]+=m[x][i];
+        }
+        total+=suma_fila[x];
+    }
+    printf("\nHORAS TRABAJADAS POR DIA:");
+    printf("\nDIA:          HORAS:");
+    for(x=0;x<f;x++)
+    {
+        printf("\n%d\t\t%f",x+1,suma_fila[x]);
+    }
+    printf("\nEl total de horas trabajadas en el periodo fue de:%f",total);
+}
+
+//Emitir un informe que indique el total de horas trabajadas por todos los empleados en este periodo.
+void punto_CyD(float m[][35],int f,int c,float sueldos[])
+{
+    float suma_colum[35]={0},monto_abonado[35]={0},max;
+    int x,i,legajo[35]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35},j;
+    for(x=0;x<c;x++)
+    {
+        for(i=0;i<f;i++)
+        {
+            suma_colum[x]+=m[i][x];
+        }
+    }
+   /* printf("\nHORAS TRABAJADAS POR EMPLEADO:");
+    printf("\nEMPLEADO:          HORAS:");
+    for(x=0;x<c;x++)
+    {
+        if(suma_colum[x]!=0)
+            printf("\n%d\t\t%f",x+1,suma_colum[x]);
+        else
+            printf("\n%d\t\tNO TRABAJO",x+1);
+    }*/
+    //Informar ordenado de mayor a menor por sueldo, el legajo y monto abonado de sueldo (horas  x $15).
+    for(x=0;x<c;x++)
+    {
+        monto_abonado[x]=suma_colum[x]*15;
+    }
+    ordenamiento(legajo,sueldos,monto_abonado,35);
+    max=suma_colum[0];
+    for (i=1;i<c;i++)
+    {
+        if (suma_colum[i]>max)
+            max=suma_colum[i];
+    }
+    printf("\nLa mayor cantidad de horas trabajadas fue de %0.2f, realizado por el/los empleado/s:",max);
+    for(j=0;j<c;j++)
+    {
+        if(suma_colum[j]==max)
+            printf("\n%d",j+1);
+    }
+    printf("\nEmpleados que no trabajaron:");
+    for(x=0;x<c;x++)
+    {
+        if(suma_colum[x]==0)
+            printf("\n%d",x+1);
+    }
+}
+
+void ordenamiento(int legajo[],float sueldo[],float abonado[],int n)
+{
+    int x,j,aux;
+    float auxf;
+    for(x=0;x<n-1;x++)
+    {
+        for(j=0;j<n-1-x;j++)
+        {
+            if(sueldo[j]<sueldo[j+1])
+            {
+                aux=legajo[j];
+                legajo[j]=legajo[j+1];
+                legajo[j+1]=aux;
+
+                auxf=sueldo[j];
+                sueldo[j]=sueldo[j+1];
+                sueldo[j+1]=auxf;
+
+                auxf=abonado[j];
+                abonado[j]=abonado[j+1];
+                abonado[j+1]=auxf;
+            }
+        }
+    }
+    printf("\nLEGAJO:        SUELDO:         MONTO ABONADO: ");
+    for(x=0;x<n;x++)
+    {
+        printf("\n%d           %0.2f            %0.2f ",legajo[x],sueldo[x],abonado[x]);
+    }
+}
+

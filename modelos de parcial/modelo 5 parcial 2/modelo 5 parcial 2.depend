@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1624938020 source:c:\users\facundo\desktop\facultad niki\elementos de programacion\ejercicios\ejercicios codeblock\modelo 5 parcial 2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
