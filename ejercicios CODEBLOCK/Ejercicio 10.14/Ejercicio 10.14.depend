@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1624485449 source:c:\users\facundo\desktop\facultad niki\elementos de programacion\ejercicios\ejercicios codeblock\ejercicio 10.14\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

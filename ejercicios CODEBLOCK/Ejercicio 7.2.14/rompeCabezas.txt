@@ -1,0 +1,179 @@
+#include <stdio.h>
+#include <stdlib.h>
+void mostrar(int[][3]);
+void moverNumero(int[][3], int, int);
+int comprobarEstado(int[][3]);
+int busquedaPorFilas(int[][3],int,int);
+int busquedaPorColumna(int[][3],int,int);
+
+int main()
+{
+	int f, c,x,i;
+	int m[3][3]={
+                    {2,5,1},
+                    {7,6,3},
+                    {8,0,4}
+                }; //matriz de prueba más desordenada
+	//int m[3][3]={
+    /*                {1,2,3},
+                    {4,5,6},
+                    {7,0,8}
+                };  //matriz de prueba practicamente ordenada*/
+	int gano=0,num,encontrado;
+	while (gano==0)
+	{
+		mostrar(m);
+		do
+		{
+			printf("\nIngrese el numero que desea mover:");
+			scanf("%d",&num);
+		}while (num<1||num>8);
+
+		encontrado=0;
+		f=0;c=0;
+		while (encontrado==0)
+		{
+			/*COMPLETAR
+			realizar un algoritmo que busque en la matriz en numero ingresado
+			y que se encuentra en la variable num
+			El algoritmo debe finalizar en el momento que encuentra el número y
+			completar las variables f y c con la fila y columna donde lo encontró
+			*/
+			for(x=0;x<3;x++)
+            {
+                for(i=0;i<3;i++)
+                {
+                    if(m[x][i]==num)
+                    {
+                        f=x;
+                        c=i;
+                    }
+                    else encontrado=1;;
+                }
+            }
+		}
+		moverNumero(m,f,c);
+		gano = comprobarEstado (m);
+	}
+	mostrar(m);
+	if(gano==1)
+       {
+           printf("\n\nFELICIDADES GANO!!!\n\n");
+            system("pause");
+       }
+	return 0;
+}
+
+void moverNumero(int m[][3], int f, int c)
+{
+	int movimiento=0,aux;
+	int num= m[f][c];
+
+	/*COMPLETAR
+	La funcion recibe la fila y columna de la matriz donde está el numero que
+	se desea mover. Se debe realizar el algoritmo para que lo mueva al casillero
+	adyacente que este libre, es decir que tenga un 0.
+	Tener en cuenta que no siempre se puede mover solo lo debe mover si el 0 está
+	en una de cuatro posiciones en la celda de arriba, de abajo de la derecha o
+	izquierda sino no hace nada.
+	Tambien considerar que no siempre están las 4 opciones ya que el numero a mover
+	puede estar en alguno de los extremos de la matriz
+
+	Ayuda puede resolverse con 4 if anidados (arriba,abajo, izquierda y derecha  de
+	la celda recibida por parámetro)
+	*/
+	if(m[f-1][c]==0&&f!=0)
+    {
+        aux=num;
+        m[f][c]=0;
+        m[f-1][c]=aux;
+        movimiento++;
+    }
+    else
+    {
+        if(m[f+1][c]==0&&f!=2)
+        {
+            aux=num;
+            m[f][c]=0;
+            m[f+1][c]=aux;
+            movimiento++;
+        }
+        else
+        {
+            if(m[f][c-1]==0&&c!=0)
+            {
+                aux=num;
+                m[f][c]=0;
+                m[f][c-1]=aux;
+                movimiento++;
+            }
+            else
+            {
+                if(m[f][c+1]==0&&c!=2)
+                {
+                    aux=num;
+                    m[f][c]=0;
+                    m[f][c+1]=aux;
+                    movimiento++;
+                }
+                else
+                {
+                    if(movimiento==0)
+                        printf("NO SE PUEDE REALIZAR EL MOVIMEINTO");
+                }
+            }
+        }
+    }
+
+}
+
+void mostrar(int m[][3])
+{
+	system("cls");
+	/*COMPLETAR
+	Mostrar la matriz pero teniendo en cuenta que el 0 no debe mostrarse
+	cuando el valor sea 0 se debe mostrar un espacio en blanco*/
+    int f,c;
+        for
+        (f=0; f<3; f++)
+        {
+            for
+            (c=0; c<3; c++)
+               {
+                   if(m[f][c]==0)
+                    printf("   ");
+                   else
+                    printf("%3d",m[f][c]);
+               }
+            printf
+            ("\n");
+        }
+
+}
+
+
+int comprobarEstado(int m[][3])
+{
+    int c,f,x=0;
+	int gano;
+	/*COMPLETAR
+	Si la matriz quedó ordenada en la variable gano debe quedar un 1 sino un 0.
+	Para que esté ordenada la matriz debe estar de la siguiente forma:
+	1 2 3
+	4 5 6
+	7 8 0
+	*/
+    for(f=0;f<3;f++)
+    {
+        for(c=0;c<3;c++)
+        {
+            if(m[f][c]==x+1)
+            x++;
+        }
+    }
+    if(x==8)
+        gano=1;
+    else gano=0;
+	return gano;
+}
+
